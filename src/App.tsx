@@ -11,17 +11,14 @@ type TextType = "Incorrect value" | "enter values and press Set" | null
 
 function App() {
 
-
+    let max = Number(localStorage.getItem("max"));
+    let start = Number(localStorage.getItem("start"));
 
     const [values, setValues] = React.useState<ValuesType>({
-        maxValue: Number(localStorage.getItem("max")),
-        startValue: Number(localStorage.getItem("start"))
+        maxValue: max ? max : 5,
+        startValue: start ? start : 0,
     });
 
-    useEffect(() => {
-        localStorage.setItem("max", "5")
-        localStorage.setItem("start", "0")
-    }, [])
     const [counter, setCounter] = useState<number>(values.startValue);
     // const [editingText, setEditingText] = useState<TextType>(null);
 
