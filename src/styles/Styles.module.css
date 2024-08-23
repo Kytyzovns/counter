@@ -101,3 +101,11 @@
     gap: 100px;
     margin: 300px auto;
 }
+
+.inputError {
+    outline: 1px red solid;
+}
+
+.errorText {
+    color: red;
+}

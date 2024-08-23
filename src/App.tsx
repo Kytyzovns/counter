@@ -3,47 +3,55 @@ import './App.css';
 import {CounterDisplay} from "./CounterDisplay";
 import {Button} from "./Button";
 import s from './styles/Styles.module.css'
-import {SetWindow, ValuesType} from "./SetWindow";
+import {SetWindow} from "./SetWindow";
 import {ProgressBar} from "./ProgressBar";
 
 
-type TextType = "Incorrect value" | "enter values and press Set" | null
+export type TextType = "Incorrect value" | "enter values and press Set" | null
+
+type ValuesType = {
+    maxValue: number
+    startValue: number
+    counter: number
+}
+
 
 function App() {
 
-    let max = Number(localStorage.getItem("max"));
-    let start = Number(localStorage.getItem("start"));
+    let max = Number(localStorage.getItem("max")) ? Number(localStorage.getItem("max")) : 5;
+    let start = Number(localStorage.getItem("start")) ? Number(localStorage.getItem("start")) : 0;
 
     const [values, setValues] = React.useState<ValuesType>({
-        maxValue: max ? max : 5,
-        startValue: start ? start : 0,
+        maxValue: max,
+        startValue: start,
+        counter: start
     });
 
-    const [counter, setCounter] = useState<number>(values.startValue);
-    // const [editingText, setEditingText] = useState<TextType>(null);
+    const [currenMessage, setCurrentMessage] = React.useState<TextType>(null);
 
 
     const increaseCounter = () => {
-        if (counter < values.maxValue) {
-            setCounter(counter + 1)
+        if (values.counter < values.maxValue) {
+            setValues({...values, counter: values.counter + 1})
         }
     }
 
     const resetCounter = () => {
-        setCounter(values.startValue);
+        setValues({...values, counter: values.startValue});
     }
 
     const changeValues = () => {
         setValues({
             maxValue: Number(localStorage.getItem("max")),
-            startValue: Number(localStorage.getItem("start"))
+            startValue: Number(localStorage.getItem("start")),
+            counter: Number(localStorage.getItem("start"))
         });
-        setCounter(Number(localStorage.getItem("start")))
+
     }
     return (
         <div className={s.appContainer}>
-            <SetWindow changeValues={changeValues}/>
-            <CounterDisplay counter={counter} maxValue={Number(localStorage.getItem("max"))}
+            <SetWindow setMessage={setCurrentMessage} maxValue={max} startValue={start} changeValues={changeValues}/>
+            <CounterDisplay message={currenMessage} counter={values.counter} maxValue={Number(localStorage.getItem("max"))}
                             increaseCounter={increaseCounter}
                             resetCounter={resetCounter}/>
         </div>
